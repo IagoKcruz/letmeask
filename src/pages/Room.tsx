@@ -3,6 +3,8 @@ import logoImg from "../assets/logo.svg"
 import { Button } from "../components/Button"
 import { RoomCode } from "../components/RoomCode"
 import { FormEvent, useEffect, useState } from "react"
+import { database } from "../services/firebase"
+import { useAuth } from "../hooks/useAuth"
 type RoomParams = {
   id: string
 }
@@ -26,47 +28,45 @@ type Questions = Record<string, {
   isAnswered: boolean
 }>
 export function Room() {
+  const { user } = useAuth()
   const params = useParams<RoomParams>()
-  //const roomId = params.id
+  const roomId = params.id
   const [newQuestion, setNewQuestion] = useState('')
-  const [question, setQuestion] = useState<Questions[]>([])
+  const [ question, setQuestion] = useState<Questions[]>([])
   const [ title, setTitle] = useState('')
-  useEffect(()=>{
+  useEffect(() => {
     const roomRef = database.ref(`rooms/${roomId}`)
-    roomRef.once("value", room =>{
+    roomRef.once("value", room => {
       const databaseRoom = room.val()
-      const firebaseQuestions : firebaseQuestions = databaseRoom.questions ?? {}
-      const parsedQuestion = Object.entries(firebaseQuestions).map(([key, value])=>{
+      const firebaseQuestions: firebaseQuestions = databaseRoom.questions ?? {}
+      const parsedQuestion = Object.entries(firebaseQuestions).map(([key, value]) => {
         return {
           id: key,
           content: value.content,
           author: value.isHighLighted,
           isHighLighted: value.isHighLighted,
           isAnswered: value.isAnswered
-        }
-      setTitle(databaseRoom.title)  
-      setQuestion(parsedQuestion)
-      })
+        } 
+        })
+        setTitle(databaseRoom.title)
+        console.log(parsedQuestion)
     })
-  } [roomId])
-  function handleSendNewQuestion(event: FormEvent) {
+  }, [roomId])
+  async function handleSendNewQuestion(event: FormEvent) {
     event.preventDefault()
     if (newQuestion.trim() === "") {
       return;
     }
-    // if(!user){
-
-    // }
-    // const question = {
-    //   content: newQuestion,
-    //   author: {
-    //     name: user.name,
-    //     avatar: user.avatar
-    //   },
-    //   isHighLighted: false,
-    //   isAnswered: false
-    // }
-    // await database.ref(`rooms/${roomId}/questions`).push(question)
+    const question = {
+      content: newQuestion,
+      author: {
+        name: user?.name,
+        avatar: user?.avatar
+      },
+      isHighLighted: false,
+      isAnswered: false
+    }
+    await database.ref(`rooms/${roomId}/questions`).push(question)
 
     setNewQuestion('')
   }
@@ -113,22 +113,3 @@ export function Room() {
     </div>
   )
 }
-
-// {user ?(
-//   <div className="flex items-center">
-//     {/* < className="w-8 h-8 rounded-full" img src={user.avatar} alt={user.avatar} />
-//     <span
-//       className="text-sm text-gray-500 font-bold ml-2"
-//     >
-//     {user.name}
-//     </span> */}
-//   </div>
-// ):(
-//   <span
-//     className="text-sm text-gray-500 font-bold">
-//     Para enviar uma pergunta,&nbsp;
-//     <button
-//       className="bg-transparent border-0 text-violet-700 underline decoration-solid">
-//       faça seu login </button>.
-//   </span>
-// )}

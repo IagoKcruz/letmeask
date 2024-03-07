@@ -3,9 +3,6 @@ import { ButtonHTMLAttributes } from "react"
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>
 
 export function Button(props: ButtonProps) {
-
-    console.log(props)
-
     return (
         <button
             type={props.type}
