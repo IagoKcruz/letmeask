@@ -1,11 +1,11 @@
-// import { useAuth } from '../hooks/useAuth'
+import { useAuth } from '../hooks/useAuth'
 import { Link } from "react-router-dom"
 import illustrationImg from "../assets/illustration.svg"
 import logoImg from "../assets/logo.svg"
 import { Button } from "../components/Button"
 
 export function NewRoom() {
-    //const { user } = useAuth()
+    const { user } = useAuth()
     return (
         <div className="h-screen flex flex-row items-stretch " id="page-auth">
             <aside className="w-1/2 flex flex-col justify-center py-32 px-20 bg-violet-600">

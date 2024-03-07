@@ -1,4 +1,4 @@
-// import { useAuth } from '../hooks/useAuth'
+import { useAuth } from '../hooks/useAuth'
 import { useHistory } from "react-router-dom"
 import illustrationImg from "../assets/illustration.svg"
 import logoImg from "../assets/logo.svg"
@@ -9,12 +9,11 @@ import { Button } from "../components/Button"
 
 export function Home() {
     const history = useHistory()
-    //const { user, singInWithGoogle } = useAuth()
-    //async
-    function hendleCreateRoom(){
-        // if(!user){
-        //     await singInWithGoogle()
-        // }
+    const { user, signInWithGoogle } = useAuth()
+    async function hendleCreateRoom(){
+        if(!user){
+            await signInWithGoogle()
+        }
         history.push("/rooms/new")
     }
     return (
