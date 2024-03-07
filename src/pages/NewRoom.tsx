@@ -2,8 +2,21 @@ import { Link } from "react-router-dom"
 import illustrationImg from "../assets/illustration.svg"
 import logoImg from "../assets/logo.svg"
 import { Button } from "../components/Button"
-
+import { FormEvent, useState } from "react"
 export function NewRoom() {
+    const [newRoom, setNewRoom ] = useState('')    
+    function hendleCreateRoom(event: FormEvent){
+        event.preventDefault()
+        if(newRoom.trim() == ""){
+            return;
+        }
+        //enviar para devHome/IK
+        //const roomRef = database.ref("rooms")
+        //const firebaseRoom = await roomRef.push({
+        //     title: newRoom,
+        //     authorID: user?.id,
+        // })
+    }
     return (
         <div className="h-screen flex flex-row items-stretch " id="page-auth">
             <aside className="w-1/2 flex flex-col justify-center py-32 px-20 bg-violet-600">
@@ -16,11 +29,13 @@ export function NewRoom() {
                     <img className="self-center max-w-40" src={logoImg} alt="Letmeask" />
                     <h2 className="text-3xl mt-12 mb-8 font-extrabold">
                         Criar uma nova sala</h2>
-                    <form >
+                    <form onClick={hendleCreateRoom}>
                         <input
                             type="text"
                             placeholder="Nome da sala"
                             className="w-full h-11 rounded-lg px-4 bg-white border border-solid border-slate-100"
+                            onChange={event => setNewRoom(event.target.value)}
+                            value={newRoom}
                         />
                         <Button 
                         type="submit"

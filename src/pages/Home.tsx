@@ -32,7 +32,7 @@ export function Home() {
                     className="text-lg text-slate-400 flex items-center mx-0 my-8 before:content-[''] before:flex-1 before:h-0.5 before:bg-slate-400 before:mr-4 after:content-[''] after:flex-1 after:h-0.5 after:bg-slate-400 after:ml-4">
                     ou entre numa sala
                     </div>
-                    <form >
+                    <form>
                         <input
                             type="text"
                             placeholder="Digite o código da sala"
