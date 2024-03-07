@@ -4,6 +4,7 @@ import { App } from './App';
 import "./css/tailwind.css";
 import "./css/normalize.css"
 import "./css/global.css"
+import "./services/firebase"
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
