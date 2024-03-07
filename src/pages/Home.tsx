@@ -5,13 +5,13 @@ import logoImg from "../assets/logo.svg"
 import googleImg from "../assets/google-icon.svg"
 import { Button } from "../components/Button"
 import { FormEvent, useState } from "react"
+import { database } from '../services/firebase'
 
 
 
 export function Home() {
     const history = useHistory()
     const [roomCode, setRoomCode] = useState('')
-    function hendleCreateRoom() {
     const { user, signInWithGoogle } = useAuth()
     async function hendleCreateRoom(){
         if(!user){
@@ -19,7 +19,7 @@ export function Home() {
         }
         history.push("/rooms/new")
     }
-    function handleJoinRoom(event: FormEvent) {
+    async function handleJoinRoom(event: FormEvent) {
         event.preventDefault()
         if (roomCode.trim() === "") {
             return;

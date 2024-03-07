@@ -4,20 +4,23 @@ import illustrationImg from "../assets/illustration.svg"
 import logoImg from "../assets/logo.svg"
 import { Button } from "../components/Button"
 import { FormEvent, useState } from "react"
+import { database } from "../services/firebase"
+import { useAuth } from "../hooks/useAuth"
 
 export function NewRoom() {
+  const { user } = useAuth()
   const history = useHistory()
   const [newRoom, setNewRoom] = useState('')
-  function hendleCreateRoom(event: FormEvent) {
+  async function hendleCreateRoom(event: FormEvent) {
     event.preventDefault()
     if (newRoom.trim() === "") {
       return;
     }
     const roomRef = database.ref("rooms")
     const firebaseRoom = await roomRef.push({
-        title: newRoom,
-         authorID: user?.id,
-     })
+      title: newRoom,
+      authorID: user?.id,
+    })
     history.push(`/rooms/${firebaseRoom.key}`)
   }
   return (
