@@ -1,3 +1,4 @@
+
 import { Link, useHistory } from "react-router-dom"
 import illustrationImg from "../assets/illustration.svg"
 import logoImg from "../assets/logo.svg"
@@ -12,14 +13,12 @@ export function NewRoom() {
     if (newRoom.trim() === "") {
       return;
     }
-    //enviar para devHome/IK
-    //const roomRef = database.ref("rooms")
-    //const firebaseRoom = await roomRef.push({
-    //     title: newRoom,
-    //     authorID: user?.id,
-    // })
-    //history.push(`/rooms/${firebaseRoom.key}`)
-    history.push(`/rooms/1`)
+    const roomRef = database.ref("rooms")
+    const firebaseRoom = await roomRef.push({
+        title: newRoom,
+         authorID: user?.id,
+     })
+    history.push(`/rooms/${firebaseRoom.key}`)
   }
   return (
     <div className="h-screen flex flex-row items-stretch " id="page-auth">

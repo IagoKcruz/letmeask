@@ -1,3 +1,4 @@
+import { useAuth } from '../hooks/useAuth'
 import { useHistory } from "react-router-dom"
 import illustrationImg from "../assets/illustration.svg"
 import logoImg from "../assets/logo.svg"
@@ -11,6 +12,11 @@ export function Home() {
     const history = useHistory()
     const [roomCode, setRoomCode] = useState('')
     function hendleCreateRoom() {
+    const { user, signInWithGoogle } = useAuth()
+    async function hendleCreateRoom(){
+        if(!user){
+            await signInWithGoogle()
+        }
         history.push("/rooms/new")
     }
     function handleJoinRoom(event: FormEvent) {
@@ -18,15 +24,14 @@ export function Home() {
         if (roomCode.trim() === "") {
             return;
         }
-        //enviar para devHome/IK
-        // const roomRef = await database.ref(`/rooms;${roomCode}`).get()
+        const roomRef = await database.ref(`/rooms;${roomCode}`).get()
 
-        // if(!roomRef.exists()){
-        //     alert("Room does not exists");
-        //     return;
-        // }
+        if(!roomRef.exists()){
+            alert("Room does not exists");
+             return;
+        }
 
-        // history.push(`rooms/${roomCode}`)
+        history.push(`rooms/${roomCode}`)
 
         if (roomCode !== "1") {
             alert("Room does not exists");
