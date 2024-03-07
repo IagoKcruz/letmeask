@@ -1,9 +1,11 @@
-import { Link } from "react-router-dom"
+import { Link, useHistory } from "react-router-dom"
 import illustrationImg from "../assets/illustration.svg"
 import logoImg from "../assets/logo.svg"
 import { Button } from "../components/Button"
 import { FormEvent, useState } from "react"
+
 export function NewRoom() {
+    const history = useHistory()
     const [newRoom, setNewRoom ] = useState('')    
     function hendleCreateRoom(event: FormEvent){
         event.preventDefault()
@@ -16,6 +18,8 @@ export function NewRoom() {
         //     title: newRoom,
         //     authorID: user?.id,
         // })
+        //history.push(`/rooms/${firebaseRoom.key}`)
+        history.push(`/rooms/1`)
     }
     return (
         <div className="h-screen flex flex-row items-stretch " id="page-auth">

@@ -3,13 +3,38 @@ import illustrationImg from "../assets/illustration.svg"
 import logoImg from "../assets/logo.svg"
 import googleImg from "../assets/google-icon.svg"
 import { Button } from "../components/Button"
+import { FormEvent, useState } from "react"
 
 
 
 export function Home() {
     const history = useHistory()
+    const [ roomCode, setRoomCode ] = useState('')
     function hendleCreateRoom(){
         history.push("/rooms/new")
+    }
+    function handleJoinRoom(event: FormEvent) {
+        event.preventDefault()
+        if(roomCode.trim() == ""){
+            return;
+        }
+        //enviar para devHome/IK
+        // const roomRef = await database.ref(`/rooms;${roomCode}`).get()
+
+        // if(!roomRef.exists()){
+        //     alert("Room does not exists");
+        //     return;
+        // }
+
+        // history.push(`rooms/${roomCode}`)
+
+        if(roomCode != "1"){
+            alert("Room does not exists");
+            return;
+        }
+
+        history.push(`rooms/${roomCode}`)
+
     }
     return (
         <div className="h-screen flex flex-row items-stretch " id="page-auth">
@@ -32,11 +57,13 @@ export function Home() {
                     className="text-lg text-slate-400 flex items-center mx-0 my-8 before:content-[''] before:flex-1 before:h-0.5 before:bg-slate-400 before:mr-4 after:content-[''] after:flex-1 after:h-0.5 after:bg-slate-400 after:ml-4">
                     ou entre numa sala
                     </div>
-                    <form>
+                    <form onClick={handleJoinRoom} >
                         <input
                             type="text"
                             placeholder="Digite o código da sala"
                             className="w-full h-11 rounded-lg px-4 bg-white border border-solid border-slate-100"
+                            onChange={event => setRoomCode(event.target.value)}
+                            value={roomCode}
                         />
                         <Button 
                         type="submit"
