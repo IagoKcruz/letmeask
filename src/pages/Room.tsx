@@ -2,30 +2,14 @@ import { useParams } from "react-router-dom"
 import logoImg from "../assets/logo.svg"
 import { Button } from "../components/Button"
 import { RoomCode } from "../components/RoomCode"
-import { FormEvent, useEffect, useState } from "react"
+import { FormEvent, useState } from "react"
 import { database } from "../services/firebase"
 import { useAuth } from "../hooks/useAuth"
+import { Question } from "../components/Question"
+import { useRoom } from "../hooks/useRoom"
+
 type RoomParams = {
   id: string
-}
-type firebaseQuestions = Record<string, {
-  author: {
-    name: string,
-    avatar: string
-  },
-  content: string,
-  isHighLighted: boolean,
-  isAnswered: boolean
-}>
-type Question = {
-  id: string,
-  author: {
-    name: string,
-    avatar: string
-  },
-  content: string,
-  isHighLighted: boolean,
-  isAnswered: boolean
 }
 
 export function Room() {
@@ -33,29 +17,7 @@ export function Room() {
   const params = useParams<RoomParams>()
   const roomId = params.id
   const [newQuestion, setNewQuestion] = useState('')
-  const [questions, setQuestion] = useState<Question[]>([])
-  const [title, setTitle] = useState('')
-  useEffect(() => {
-    const roomRef = database.ref(`rooms/${roomId}`)
-    roomRef.on("value", room => {
-      const databaseRoom = room.val()
-      console.log(databaseRoom.questions)
-      const firebaseQuestions = databaseRoom.questions as firebaseQuestions
-      const parsedQuestion = Object.entries(firebaseQuestions ?? {}).map(([key, value]) => {
-        
-        return {
-          id: key,
-          content: value.content,
-          author: value.author,
-          isHighLighted: value.isHighLighted,
-          isAnswered: value.isAnswered
-        }
-      })
-      console.log(parsedQuestion)
-      setTitle(databaseRoom.title)
-      setQuestion(parsedQuestion)
-    })
-  }, [roomId])
+  const { questions, title } = useRoom(roomId)
   async function handleSendNewQuestion(event: FormEvent) {
     event.preventDefault()
     if (newQuestion.trim() === "") {
@@ -76,7 +38,7 @@ export function Room() {
   }
   return (
     <div className="flex flex-col">
-      <header className="p-3 bottom-1 border-solid border-slate-300">
+      <header className="p-3 bottom-1 border border-solid border-slate-300">
         <div className="flex max-w-5xl justify-between m-auto items-center">
           <img className="max-h-11" src={logoImg} alt="imagem logo" />
           <RoomCode code={params.id} />
@@ -126,7 +88,15 @@ export function Room() {
             </Button>
           </div>
         </form>
-        {JSON.stringify(questions)}
+        {questions.map(questions =>{
+          return(
+            <Question
+            key={questions.id}
+            content={questions.content}
+            author={questions.author}
+            />
+          )
+        })}
       </main>
     </div>
   )
