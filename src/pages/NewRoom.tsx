@@ -21,7 +21,7 @@ export function NewRoom() {
       title: newRoom,
       authorID: user?.id,
     })
-    history.push(`/rooms/${firebaseRoom.key}`)
+    history.push(`/admin/rooms/${firebaseRoom.key}`)
   }
   return (
     <div className="h-screen flex flex-row items-stretch " id="page-auth">
