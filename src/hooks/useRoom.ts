@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { database } from "../services/firebase"
 import { useAuth } from "./useAuth"
-
 type firebaseQuestions = Record<string, {
     author: {
         id: string,
@@ -35,12 +34,10 @@ export function useRoom(roomId: string) {
 
     useEffect(() => {
         const roomRef = database.ref(`rooms/${roomId}`)
-
         roomRef.on("value", room => {
             const databaseRoom = room.val()
             const firebaseQuestions = databaseRoom.questions as firebaseQuestions
             const parsedQuestion = Object.entries(firebaseQuestions ?? {}).map(([key, value]) => {
-
                 return {
                     id: key,
                     content: value.content,
