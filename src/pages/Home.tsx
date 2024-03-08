@@ -13,6 +13,7 @@ export function Home() {
     const history = useHistory()
     const [roomCode, setRoomCode] = useState('')
     const { user, signInWithGoogle } = useAuth()
+
     async function hendleCreateRoom(){
         if(!user){
             await signInWithGoogle()
@@ -24,25 +25,17 @@ export function Home() {
         if (roomCode.trim() === "") {
             return;
         }
-        const roomRef = await database.ref(`/rooms;${roomCode}`).get()
-
+        const roomRef = await database.ref(`/rooms/${roomCode}`).get()
         if(!roomRef.exists()){
+            console.log("erro1")
             alert("Room does not exists");
              return;
         }
-
         if(roomRef.val().ended) {
+            console.log("erro3")
             alert("Room already closed.")
             return
         }
-
-        history.push(`rooms/${roomCode}`)
-
-        if (roomCode !== "1") {
-            alert("Room does not exists");
-            return;
-        }
-
         history.push(`rooms/${roomCode}`)
 
     }
