@@ -9,6 +9,15 @@ type RoomParams = {
   id: string
 }
 type firebaseQuestions = Record<string, {
+  author: {
+    name: string,
+    avatar: string
+  },
+  content: string,
+  isHighLighted: boolean,
+  isAnswered: boolean
+}>
+type Question = {
   id: string,
   author: {
     name: string,
@@ -17,39 +26,34 @@ type firebaseQuestions = Record<string, {
   content: string,
   isHighLighted: boolean,
   isAnswered: boolean
-}>
-type Questions = Record<string, {
-  author: {
-    name: string,
-    avatar: string
-  },
-  content: string,
-  isHighLighted: boolean,
-  isAnswered: boolean
-}>
+}
+
 export function Room() {
   const { user } = useAuth()
   const params = useParams<RoomParams>()
   const roomId = params.id
   const [newQuestion, setNewQuestion] = useState('')
-  const [ question, setQuestion] = useState<Questions[]>([])
-  const [ title, setTitle] = useState('')
+  const [questions, setQuestion] = useState<Question[]>([])
+  const [title, setTitle] = useState('')
   useEffect(() => {
     const roomRef = database.ref(`rooms/${roomId}`)
-    roomRef.once("value", room => {
+    roomRef.on("value", room => {
       const databaseRoom = room.val()
-      const firebaseQuestions: firebaseQuestions = databaseRoom.questions ?? {}
-      const parsedQuestion = Object.entries(firebaseQuestions).map(([key, value]) => {
+      console.log(databaseRoom.questions)
+      const firebaseQuestions = databaseRoom.questions as firebaseQuestions
+      const parsedQuestion = Object.entries(firebaseQuestions ?? {}).map(([key, value]) => {
+        
         return {
           id: key,
           content: value.content,
-          author: value.isHighLighted,
+          author: value.author,
           isHighLighted: value.isHighLighted,
           isAnswered: value.isAnswered
-        } 
-        })
-        setTitle(databaseRoom.title)
-        console.log(parsedQuestion)
+        }
+      })
+      console.log(parsedQuestion)
+      setTitle(databaseRoom.title)
+      setQuestion(parsedQuestion)
     })
   }, [roomId])
   async function handleSendNewQuestion(event: FormEvent) {
@@ -80,9 +84,9 @@ export function Room() {
       </header>
       <main className="w-full max-w-4xl m-auto">
         <div className="mt-8 mr-0 ml-6 flex items-center">
-          <h1 className="text-2xl font-extrabold text-gray-700">Sala React</h1>
+          <h1 className="text-2xl font-black text-gray-700">{title}</h1>
           <span className="ml-4 bg-fuchsia-400 rounded-full text-white font-medium text-sm px-4 py-2">
-            Pergunta(s)</span>
+          { questions.length > 0 ? questions.length : 0} pergunta(s)</span> 
         </div>
         <form onSubmit={handleSendNewQuestion}>
           <textarea
@@ -93,23 +97,38 @@ export function Room() {
           >
           </textarea>
           <div className="flex justify-between items-center mt-6">
-            <span
-              className="text-sm text-gray-500 font-bold">
-              Para enviar uma pergunta,&nbsp;
-              <button
-                className="bg-transparent border-0 text-violet-700 underline decoration-solid">
-                faça seu login </button>.
-            </span>
+            {user ? (
+              <div className="flex items-center">
+                <img 
+                src={user.avatar} alt={user.name} 
+                className="rounded-full h-12 mr-3 border-2 border-violet-700 border-solid"/>
+                <span
+                className="font-bold text-base text-slate-600"
+                >
+                {user.name}
+                </span>
+              </div>
+            ) : (
+              <span
+                className="text-sm text-gray-500 font-bold">
+                Para enviar uma pergunta,&nbsp;
+                <button
+                  className="bg-transparent border-0 text-violet-700 underline decoration-solid">
+                  faça seu login </button>.
+              </span>
+            )}
             <Button
               className="h-12 px-6 py-5"
               type="submit"
-            //disabled={!user}
+              disabled={!user}
             >
               Enviar Pergunta
             </Button>
           </div>
         </form>
+        {JSON.stringify(questions)}
       </main>
     </div>
   )
 }
+
