@@ -1,13 +1,17 @@
+import { ReactNode } from "react"
+
 type QuestionsProps = {
     content: string,
     author:{
         name: string,
         avatar:string
     }
+    children?: ReactNode
 }
 export function Question({
     content,
-    author
+    author,
+    children
 }: QuestionsProps) {
     return(
         <div className="bg-slate-50 rounded-lg shadow-sm p-6 mt-4">
@@ -25,8 +29,8 @@ export function Question({
                 {author.name}
                 </span>
               </div>
-                <div className="">
-                    user / admin
+                <div >
+                    {children}
                 </div>
             </footer>
         </div>
