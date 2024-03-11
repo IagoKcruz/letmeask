@@ -1,13 +1,13 @@
 export function ComentsBox() {
   return (
-    <main className=" flex flex-col ">
-      <div className="self-center">
+    <main className=" flex flex-col items-center">
+      <div className="">
         Comentarios
       </div>
       {
-        
+
       }
-      <div className="w-4/5 flex items-start gap-x-2 ml-10 mt-4">
+      <div className="w-4/5 flex items-start gap-x-2 mt-4">
         <span className="self-center"
         >Avatar</span>
         <div className="w-full items-center flex justify-between">
@@ -37,18 +37,18 @@ export function ComentsBox() {
           </button>
         </div>
       </div>
-      <div className="flex mt-6 items-stretch justify-between gap-x-2"> 
+      <form className="w-full flex mt-6 items-stretch gap-x-1"> 
         <input 
         type="text" 
         placeholder="Escreva seu comentário aqui..."
         className="w-full px-4 py-2 rounded-lg"
         />
         <button 
-        className="py-2 px-4  border border-violet-700 rounded-full border-solid "
+        className="py-2 px-4 border border-violet-700 rounded-lg border-solid "
         >
           Enviar&nbsp;comentario
         </button>
-      </div>
+      </form>
     </main>
   )
 }
