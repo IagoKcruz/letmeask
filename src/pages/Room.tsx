@@ -33,7 +33,8 @@ export function Room() {
         avatar: user?.avatar
       },
       isHighLighted: false,
-      isAnswered: false
+      isAnswered: false,
+      isComents: false
     }
     await database.ref(`rooms/${roomId}/questions`).push(question)
 
@@ -69,13 +70,13 @@ export function Room() {
           {
             authorRoomId === user?.id &&
             <div>
-            <Button
-            onClick={HandlePageAdminBack}
-              className="px-5 py-3"
-              isOutLined
-            >Pagina Administrador</Button>
+              <Button
+                onClick={HandlePageAdminBack}
+                className="px-5 py-3"
+                isOutLined
+              >Pagina Administrador</Button>
             </div>
-          
+
           }
         </div>
         <form onSubmit={handleSendNewQuestion}>
@@ -142,6 +143,7 @@ export function Room() {
                   </button>
                 ]
               }
+
             </Question>
           )
         })}

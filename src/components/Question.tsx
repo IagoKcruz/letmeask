@@ -1,9 +1,10 @@
 import { ReactNode } from "react"
+import { ComentsBox } from "./Coments"
 type QuestionsProps = {
     content: string,
-    author:{
+    author: {
         name: string,
-        avatar:string
+        avatar: string
     }
     children?: ReactNode,
     isAnswered?: boolean,
@@ -16,30 +17,36 @@ export function Question({
     isHighLighted = false,
     children
 }: QuestionsProps) {
-    return(
-        <div className={ isAnswered === false ? (
-            isHighLighted ? ("bg-slate-100 border-violet-700 border-solid border rounded-lg shadow-sm p-6 mt-4"):("bg-slate-50 rounded-lg shadow-sm p-6 mt-4" )
-        ): (
+    return (
+        <div className={isAnswered === false ? (
+            isHighLighted ? ("bg-slate-100 border-violet-700 border-solid border rounded-lg shadow-sm p-6 mt-4") : ("bg-slate-50 rounded-lg shadow-sm p-6 mt-4")
+        ) : (
             "bg-gray-300 rounded-lg shadow-sm p-6 mt-4"
         )} >
             <p>
                 {content}
             </p>
-            <footer className="flex justify-between items-center mt-6">
-            <div className="flex items-center">
-                <img 
-                src={author.avatar} alt={author.name} 
-                className="rounded-full h-6 mr-3 border-2 border-violet-700 border-solid"/>
-                <span
-                className="font-extrabold text-xs text-slate-400"
-                >
-                {author.name}
-                </span>
-              </div>
-                <div >
-                    {children}
+            <footer className="flex flex-col mt-6">
+                <div className="w-full flex justify-between mb-4">
+                    <div className="flex items-center">
+                        <img
+                            src={author.avatar} alt={author.name}
+                            className="rounded-full h-6 mr-3 border-2 border-violet-700 border-solid" />
+                        <span
+                            className="font-extrabold text-xs text-slate-400"
+                        >
+                            {author.name}
+                        </span>
+                    </div>
+                    <div >
+                        {children}
+                    </div>
+                </div>
+                <div>
+                    <ComentsBox />
                 </div>
             </footer>
+
         </div>
     )
 }
