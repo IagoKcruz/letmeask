@@ -19,7 +19,7 @@ export function Room() {
   const roomId = params.id
   console.log(roomId)
   const [newQuestion, setNewQuestion] = useState('')
-  const { questions, title } = useRoom(roomId)
+  const { questions, title, authorRoomId } = useRoom(roomId)
   async function handleSendNewQuestion(event: FormEvent) {
     event.preventDefault()
     if (newQuestion.trim() === "") {
@@ -66,18 +66,17 @@ export function Room() {
             <span className="ml-4 bg-fuchsia-400 rounded-full text-white font-medium text-sm px-4 py-2">
               {questions.length > 0 ? questions.length : 0} pergunta(s)</span>
           </div>
-          {questions.map(question => {
-          return (
-            question.author.id === user?.id &&
+          {
+            authorRoomId === user?.id &&
             <div>
             <Button
             onClick={HandlePageAdminBack}
-              className="px-6 py-2"
+              className="px-5 py-3"
+              isOutLined
             >Pagina Administrador</Button>
             </div>
-          )
-        })}
-
+          
+          }
         </div>
         <form onSubmit={handleSendNewQuestion}>
           <textarea
