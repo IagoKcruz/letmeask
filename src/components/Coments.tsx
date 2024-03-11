@@ -7,9 +7,8 @@ export function ComentsBox() {
       {
 
       }
-      <div className="w-4/5 flex items-start gap-x-2 mt-4">
-        <span className="self-center"
-        >Avatar</span>
+      <div className="w-4/5 flex items-start gap-x-2 mt-4 rounded-md bg-white p-3">
+        <span className="self-center">Avatar</span>
         <div className="w-full items-center flex justify-between">
           <p>Aqui vai o comentário das pessoas</p>
           {/* <button className="flex flex-row items-end gap-x-1"

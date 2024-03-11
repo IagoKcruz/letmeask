@@ -43,7 +43,9 @@ export function Question({
                     </div>
                 </div>
                 <div>
-                    <ComentsBox />
+                    <ComentsBox 
+                    
+                    />
                 </div>
             </footer>
 
